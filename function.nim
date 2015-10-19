@@ -13,7 +13,6 @@ let
     
     b* = dvector(size, @[1.0, -2.0, 3.0])
     c* = 20.0
-# f(x) = 1/2 * xT * A * x + xT * b + c
 
 proc grad*(x: Vector64[size]): Vector64[size] = A*x + b
 

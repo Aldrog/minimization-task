@@ -9,15 +9,15 @@ proc euclidNorm(x: Vector64[f.size]): float =
 proc estimateDistance(x: Vector64[f.size]): float = euclidNorm(f.grad(x)) / f.delta
 
 proc gradDescent*(precision: float): tuple[value: float, point: Vector64[f.size]] =
-    echo("\n@ Gradient descent method @\n")
+    stderr.writeLine("\n@ Gradient descent method @\n")
     result.point = zeros(f.size)
-    echo("Starting point:\n", result.point, "\nf = ", f(result.point))
+    stderr.writeLine("Starting point:\n", result.point, "\nf = ", f(result.point), "\n")
     var step = 1
     while estimateDistance(result.point) > precision:
         let q = f.grad(result.point)
         let mu = -(pow(euclidNorm(q), 2.0) / ((f.A.t * q).asMatrix(1, f.size) * q)[0])
         result.point = mu*q + result.point
-        echo("\nStep #", step, ":\n", result.point, "\nf = ", f(result.point))
+        stderr.writeLine("Step #", step, ":\n", result.point, "\nf = ", f(result.point), "\n")
         step += 1
     result.value = f(result.point)
 
@@ -26,9 +26,9 @@ proc ort(i: range[0..(f.size - 1)]): Vector64[f.size] =
     result[i] = 1
 
 proc coordDescent*(precision: float): tuple[value: float, point: Vector64[f.size]] =
-    echo("\n@ Coordinate descent method @\n")
+    stderr.writeLine("\n@ Coordinate descent method @\n")
     result.point = zeros(f.size)
-    echo("Starting point:\n", result.point, "\nf = ", f(result.point))
+    stderr.writeLine("Starting point:\n", result.point, "\nf = ", f(result.point), "\n")
     var step = 1
     while estimateDistance(result.point) > precision:
         let fGrad = f.grad(result.point)
@@ -39,7 +39,7 @@ proc coordDescent*(precision: float): tuple[value: float, point: Vector64[f.size
         let q = ort(ortIndex)
         let mu = -((q * fGrad) / (q * (f.A*q)))
         result.point = mu*q + result.point
-        echo("\nStep #", step, ":\n", result.point, "\nf = ", f(result.point))
+        stderr.writeLine("Step #", step, ":\n", result.point, "\nf = ", f(result.point), "\n")
         step += 1
     result.value = f(result.point)
 

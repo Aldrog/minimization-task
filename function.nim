@@ -1,6 +1,6 @@
 import math, linalg
 
-# x dimension
+# Argument dimension
 const size* = 3
 
 let 

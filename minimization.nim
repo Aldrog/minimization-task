@@ -15,7 +15,7 @@ proc gradDescent*(precision: float): tuple[value: float, point: Vector64[f.size]
     var step = 1
     while estimateDistance(result.point) > precision:
         let q = f.grad(result.point)
-        let mu = -(pow(euclidNorm(q), 2.0) / ((f.A.t * q).asMatrix(1, f.size) * q)[0])
+        let mu = -(pow(euclidNorm(q), 2.0) / (q.asMatrix(1, f.size) * A * q)[0])
         result.point = mu*q + result.point
         stderr.writeLine("Step #", step, ":\n", result.point, "\nf = ", f(result.point), "\n")
         step += 1
